@@ -11,15 +11,15 @@ pipeline {
         stage('Testes Unitários') {
             steps {
                 echo "Testando ..."
-                sh "/bin/sbt coverage 'test-only * -- -F 4'"
-                sh "/bin/sbt coverageReport"
-                sh "/bin/sbt scalastyle || true"
+                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt coverage 'test-only * -- -F 4'"
+                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt coverageReport"
+                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt scalastyle || true"
             }
         }
         stage('Docker Publish') {
             steps {
                 // Gera um Jenkinsfile .
-                sh "/bin/sbt docker:stage"
+                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt docker:stage"
 
                 // Realiza a construção salvando a imagem em container docker
                 script {
