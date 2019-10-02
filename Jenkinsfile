@@ -4,13 +4,13 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo "Compiling..."
+                echo "Compilando..."
                 sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt compile"
             }
         }
-        stage('Unit Test') {
+        stage('Testes Unitários') {
             steps {
-                echo "Testing..."
+                echo "Testando ..."
                 sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt coverage 'test-only * -- -F 4'"
                 sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt coverageReport"
                 sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt scalastyle || true"
@@ -18,10 +18,10 @@ pipeline {
         }
         stage('Docker Publish') {
             steps {
-                // Generate Jenkinsfile and prepare the artifact files.
+                // Gera um Jenkinsfile .
                 sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt docker:stage"
 
-                // Run the Docker tool to build the image
+                // Realiza a construção salvando a imagem em container docker
                 script {
                     docker.withTool('docker') {
                         docker.build('my-app:latest', 'target/docker/stage')
