@@ -2,27 +2,32 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Compile') {
+        stage('Build') {
             steps {
-                echo "Compiling..."
-                sh "sbt compile"
+                echo "Compilando..."
+                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt compile"
             }
         }
-
-        stage('Test') {
+        stage('Testes Unitários') {
             steps {
-                echo "Testing..."
-                sh "sbt test"
+                echo "Testando ..."
+#                sh "/bin/sbt coverage 'test-only * -- -F 4'"
+                sh "/bin/sbt coverageReport"
+                sh "/bin/sbt scalastyle || true"
             }
         }
-
-        stage('Package') {
+        stage('Docker Publish') {
             steps {
-                echo "Packaging..."
-                sh "sbt package"
+                // Gera um Jenkinsfile .
+                sh "/bin/sbt docker:stage"
+
+                // Realiza a construção salvando a imagem em container docker
+                script {
+                    docker.withTool('docker') {
+                        docker.build('my-app:latest', 'target/docker/stage')
+                    }
+                }
             }
         }
-
     }
 }
