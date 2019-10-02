@@ -11,7 +11,7 @@ pipeline {
         stage('Testes Unitários') {
             steps {
                 echo "Testando ..."
-#                sh "/bin/sbt coverage 'test-only * -- -F 4'"
+                sh "/bin/sbt coverage 'test-only * -- -F 4'"
                 sh "/bin/sbt coverageReport"
                 sh "/bin/sbt scalastyle || true"
             }
