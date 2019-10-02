@@ -18,7 +18,7 @@ pipeline {
         stage('Docker Publish') {
             steps {
                 // Gera um Jenkinsfile .
-                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt docker:tag"
+                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt docker:publishLocal"
 
                 // Realiza a construção salvando a imagem em container docker
                 script {
