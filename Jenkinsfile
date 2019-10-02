@@ -11,7 +11,7 @@ pipeline {
         stage('Testes Unitários') {
             steps {
                 echo "Testando ..."
-                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt clean test coverageReport" 
+                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt clean test" 
 
             }
         }
