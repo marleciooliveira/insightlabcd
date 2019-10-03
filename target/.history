@@ -1,0 +1,5 @@
+compile
+docker:publish
+reload
+docker:publish
+exit
